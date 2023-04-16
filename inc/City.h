@@ -16,18 +16,18 @@ const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 20;
 
 class City{
-protected:
-    Organism *grid[GRID_HEIGHT][GRID_WIDTH]{};
 public:
     City(); //Default
     virtual ~City(); //Destructor
 
 
-    friend ostream& operator<<( ostream& output, City* city); //Override for output
+    friend ostream& operator<<(ostream& output, City city); //Override for output
 
     Organism *getOrganism(int x, int y);
 
     void setOrganism(Organism &organism, int x, int y);
+
+    Organism *grid[GRID_HEIGHT][GRID_WIDTH]{};
 };
 
 #endif //HUMANZOMBIES_CITY_H

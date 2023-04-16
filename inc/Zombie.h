@@ -10,6 +10,13 @@
 
 class Zombie : public Organism{
 
+public:
+    Zombie(); //Default
+    Zombie(City& city, int x, int y); //Creation w/ position
+    ~Zombie(); //Destructor
+
+    void setSpecies(string species);
+    string getSpecies() override;
 
 
 };

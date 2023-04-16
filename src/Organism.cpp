@@ -39,3 +39,4 @@ void Organism::setPosition(Organism& organism, int x, int y) {
     cout << x << endl;
     cout << y << endl;
 }
+

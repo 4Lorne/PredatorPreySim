@@ -6,6 +6,7 @@
 
 
 #include "../inc/City.h"
+#include "../inc/Organism.h"
 
 City::City(){
     for (int i = 0; i < GRID_HEIGHT; i++) {
@@ -27,15 +28,20 @@ void City::setOrganism(Organism& organism, int x, int y) {
     this->grid[x][y] = &organism;
 }
 
-ostream &operator<<(ostream &output, City *city) {
+ostream &operator<<(ostream &output, City city) {
     for (int i = 0; i < GRID_HEIGHT; i++){
         for (int j = 0; j < GRID_WIDTH; j++){
             if (i == 0 || i == GRID_HEIGHT - 1) {
                 output << "- ";
             } else if(j == 0 || j == GRID_WIDTH - 1){
                 output << "| ";
-            } else {
-                output << city->grid[i][j] << " ";
+            } else if (city.grid[i][j] != nullptr){ //If not a null pointer, checks for human or zombie.
+                if ((city.grid[i][j])->getSpecies() == "Zombie"){
+                    output << "Z ";
+                }
+            }
+             else {
+                output << city.grid[i][j] << " ";
             }
         }
         output << endl;

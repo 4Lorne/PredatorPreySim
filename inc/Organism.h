@@ -18,6 +18,7 @@ protected:
     int width;
     int height;
     bool moved;
+    string species;
     City *city;
 
     enum {
@@ -29,11 +30,11 @@ public:
     Organism(City *city, int width, int height); //Generate the city
     virtual ~Organism(); //Destructor
 
+    virtual string getSpecies() = 0;
     void setPosition(Organism& organism, int x, int y); //Position in the city
     void endTurn(); //Ends the turn for the species
     bool isTurn(); //Checks if it is the species turn
 
-    friend ostream& operator<<( ostream& output, Organism* organism); //Override for output
 };
 
 #endif //HUMANZOMBIES_ORGANISM_H
