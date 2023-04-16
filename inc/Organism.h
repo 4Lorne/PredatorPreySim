@@ -31,7 +31,7 @@ public:
     virtual ~Organism(); //Destructor
 
     virtual string getSpecies() = 0;
-    void setPosition(Organism& organism, int x, int y); //Position in the city
+    void setPosition(Organism& organism); //Position in the city
     void endTurn(); //Ends the turn for the species
     bool isTurn(); //Checks if it is the species turn
 

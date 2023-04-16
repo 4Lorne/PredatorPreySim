@@ -21,7 +21,8 @@ Organism::~Organism() = default;
 //Methods
 
 //Randomly assigns an x and y position
-void Organism::setPosition(Organism& organism, int x, int y) {
+void Organism::setPosition(Organism& organism) {
+
     //https://stackoverflow.com/a/38368609
     //Generates random numbers, uses another random number generator, and then a distribution system
     random_device rd;
@@ -35,8 +36,5 @@ void Organism::setPosition(Organism& organism, int x, int y) {
     if (city->getOrganism(x,y) == nullptr){
         city->setOrganism(organism,x,y);
     }
-
-    cout << x << endl;
-    cout << y << endl;
 }
 

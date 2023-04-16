@@ -20,7 +20,6 @@ public:
     City(); //Default
     virtual ~City(); //Destructor
 
-
     friend ostream& operator<<(ostream& output, City city); //Override for output
 
     Organism *getOrganism(int x, int y);

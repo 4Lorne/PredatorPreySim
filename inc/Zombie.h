@@ -12,8 +12,8 @@ class Zombie : public Organism{
 
 public:
     Zombie(); //Default
-    Zombie(City& city, int x, int y); //Creation w/ position
-    ~Zombie(); //Destructor
+    explicit Zombie(City& city); //Constructor that assigns the zombie to a city
+    ~Zombie() override; //Destructor
 
     void setSpecies(string species);
     string getSpecies() override;

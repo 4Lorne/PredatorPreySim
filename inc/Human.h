@@ -9,7 +9,13 @@
 
 
 class Human : public Organism{
+public:
+    Human();
+    explicit Human(City& city);
+    ~Human() override;
 
+    void setSpecies(string species);
+    string getSpecies() override;
 };
 
 #endif //HUMANZOMBIES_HUMAN_H
