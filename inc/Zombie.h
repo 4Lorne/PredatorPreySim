@@ -10,6 +10,8 @@
 
 class Zombie : public Organism{
 
+
+
 };
 
 #endif //HUMANZOMBIES_ZOMBIE_H

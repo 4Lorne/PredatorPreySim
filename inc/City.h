@@ -25,6 +25,9 @@ public:
 
     friend ostream& operator<<( ostream& output, City* city); //Override for output
 
+    Organism *getOrganism(int x, int y);
+
+    void setOrganism(Organism &organism, int x, int y);
 };
 
 #endif //HUMANZOMBIES_CITY_H

@@ -19,6 +19,14 @@ City::~City() {
 
 }
 
+Organism* City::getOrganism(int x, int y) {
+    return grid[x][y];
+}
+
+void City::setOrganism(Organism& organism, int x, int y) {
+    this->grid[x][y] = &organism;
+}
+
 ostream &operator<<(ostream &output, City *city) {
     for (int i = 0; i < GRID_HEIGHT; i++){
         for (int j = 0; j < GRID_WIDTH; j++){
