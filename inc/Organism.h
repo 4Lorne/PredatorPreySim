@@ -22,7 +22,7 @@ protected:
     City *city;
 
     enum {
-        WEST, NORTH, EAST, SOUTH, NUM_DIRECTIONS
+        WEST, NORTH, EAST, SOUTH, NORTHWEST, SOUTHWEST, SOUTHEAST, NORTHEAST
     };
 
 public:

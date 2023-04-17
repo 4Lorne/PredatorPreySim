@@ -3,6 +3,7 @@
 //
 
 #include <utility>
+#include <random>
 
 #include "../inc/Zombie.h"
 
@@ -45,7 +46,10 @@ Zombie::~Zombie() = default;
 
 
 void Zombie::move() {
-    int direction = getRandomNumber();
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(0, 6);
+    int direction = distrib(gen);
 
     // Move the human up if the cell above is empty
     switch(direction){
@@ -88,6 +92,51 @@ void Zombie::move() {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
                 x++;
+            }
+            break;
+        case NORTHWEST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
+                city->setOrganism(this, x - 1, y - 1);
+                city->setOrganism(nullptr, x, y);
+                x--;
+                y--;
+            }
+            break;
+
+        case SOUTHWEST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
+                city->setOrganism(this, x + 1, y - 1);
+                city->setOrganism(nullptr, x, y);
+                x++;
+                y--;
+            }
+            break;
+        case SOUTHEAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
+                city->setOrganism(this, x + 1, y + 1);
+                city->setOrganism(nullptr, x, y);
+                x++;
+                y++;
+            }
+            break;
+        case NORTHEAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
+                city->setOrganism(this, x - 1, y + 1);
+                city->setOrganism(nullptr, x, y);
+                x--;
+                y++;
             }
             break;
     }
