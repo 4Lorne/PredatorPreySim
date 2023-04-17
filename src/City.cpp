@@ -22,8 +22,8 @@ Organism* City::getOrganism(int x, int y) {
     return grid[x][y];
 }
 
-void City::setOrganism(Organism& organism, int x, int y) {
-    this->grid[x][y] = &organism;
+void City::setOrganism(Organism* organism, int x, int y) {
+    this->grid[x][y] = organism;
 }
 
 //Prints the city
@@ -46,10 +46,16 @@ ostream &operator<<(ostream &output, City city) {
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset to default color
                 }
             } else {
+                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 output << city.grid[i][j] << " ";
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset to default color
             }
         }
         output << endl;
     }
     return output;
+}
+
+bool City::inBounds(int x, int y) {
+    return (x >= 0 && x < GRIDSIZE && y >= 0 && y < GRIDSIZE);
 }

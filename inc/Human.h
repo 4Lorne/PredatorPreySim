@@ -11,11 +11,13 @@
 class Human : public Organism{
 public:
     Human();
-    explicit Human(City& city);
+     Human(City& city);
     ~Human() override;
 
     void setSpecies(string species);
     string getSpecies() override;
+
+    void move() override;
 };
 
 #endif //HUMANZOMBIES_HUMAN_H

@@ -20,11 +20,17 @@ public:
     City(); //Default
     virtual ~City(); //Destructor
 
-    friend ostream& operator<<(ostream& output, City city); //Override for output
 
+    //Checks what organism is located at the coordinates
     Organism *getOrganism(int x, int y);
+    //Sets a specific organism to a coordinate.
+    void setOrganism(Organism* organism, int x, int y);
 
-    void setOrganism(Organism &organism, int x, int y);
+    //Checks if the zombie or human are within the bounds of the city
+    static bool inBounds(int x, int y);
+
+    //Overloaded output operator
+    friend ostream& operator<<(ostream& output, City city); //Override for output
 
     Organism *grid[GRID_HEIGHT][GRID_WIDTH]{};
 };
