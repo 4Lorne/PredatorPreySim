@@ -9,6 +9,9 @@
 
 
 class Human : public Organism{
+private:
+    bool canBreed;
+    int breedCounter;
 public:
     Human();
      Human(City& city);
@@ -16,8 +19,15 @@ public:
 
     void setSpecies(string species);
     string getSpecies() override;
+    int viableBreedingGrounds();
 
     void move() override;
+
+    bool getBreedingStatus() const;
+
+    int getX();
+
+    int getY();
 };
 
 #endif //HUMANZOMBIES_HUMAN_H

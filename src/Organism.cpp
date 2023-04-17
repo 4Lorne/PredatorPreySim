@@ -37,6 +37,9 @@ void Organism::setPosition(Organism *organism) {
         city->setOrganism(organism, x, y);
     }
 }
+void Organism::setPosition(Organism *organism, int x, int y){
+    city->setOrganism(organism, x, y);
+}
 
 
 int Organism::getRandomNumber() {

@@ -37,6 +37,8 @@ public:
 
     virtual void move() {}
     int getRandomNumber();
+
+    void setPosition(Organism *organism, int x, int y);
 };
 
 #endif //HUMANZOMBIES_ORGANISM_H

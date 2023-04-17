@@ -8,6 +8,9 @@
 Human::Human(City &city) {
     this->species = "Human";
     this->city = &city;
+    this->canBreed = false;
+    this->breedCounter = HUMAN_BREED;
+    this->moved = false;
     this->x = x;
     this->y = y;
 }
@@ -26,33 +29,46 @@ string Human::getSpecies() {
 
 }
 
+int Human::getX(){
+    return x;
+}
+
+int Human::getY(){
+    return y;
+}
+
+bool Human::getBreedingStatus() const{
+    return this->canBreed;
+}
+
 
 void Human::move() {
-    int z = getRandomNumber();
+    int direction = getRandomNumber();
+
     // Move the human up if the cell above is empty
-    switch(z){
-        case 1:
+    switch(direction){
+        case WEST:
             if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
             }
             break;
-        case 2:
+        case EAST:
             if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 2)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
                 y++;
             }
             break;
-        case 3:
+        case NORTH:
             if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 2, y)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
                 x--;
             }
             break;
-        case 4:
+        case SOUTH:
             if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 2, y)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
@@ -60,5 +76,52 @@ void Human::move() {
             }
             break;
     }
+    if (breedCounter > 0){
+        canBreed = false;
+        breedCounter--;
+    }
+    if (breedCounter == 0){
+        if (viableBreedingGrounds() < 5){
+            canBreed = true;
+        }
+        breedCounter = 3;
+    }
+}
+
+
+
+int Human::viableBreedingGrounds(){
+    int direction = 0;
+
+    //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
+    while (direction < 5){
+        switch (direction){
+            case WEST:
+                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
+                    return direction;
+                }
+                direction++;
+                break;
+            case EAST:
+                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 2)){
+                    return direction;
+                }
+                direction++;
+                break;
+            case NORTH:
+                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 2, y)){
+                    return direction;
+                }
+                direction++;
+                break;
+            case SOUTH:
+                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 2, y)){
+                    return direction;
+                }
+                direction++;
+                break;
+        }
+    }
+    return 5;
 }
 
