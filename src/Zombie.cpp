@@ -36,7 +36,7 @@ bool Zombie::getBreedingStatus() const {
 }
 
 bool Zombie::setBreedingStatus(bool status) {
-    this->canBreed = status;
+    return this->canBreed = status;
 }
 
 int Zombie::getX() {
@@ -57,51 +57,49 @@ void Zombie::move() {
     // Move the human up if the cell above is empty
     switch (direction) {
         case WEST:
-            if (city->getOrganism(x, y) != this) {
-                // The current cell is not empty, don't move
-                break;
-            }
-            if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
+            if (city->getOrganism(x, y - 1) != nullptr && city->getOrganism(x, y - 1)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x, y - 1), x, y - 1);
+            } else if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
             }
             break;
         case EAST:
-            if (city->getOrganism(x, y) != this) {
-                break;
-            }
-            if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
+            if (city->getOrganism(x, y + 1) != nullptr && city->getOrganism(x, y + 1)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x, y + 1), x, y + 1);
+            } else if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
                 y++;
             }
             break;
         case NORTH:
-            if (city->getOrganism(x, y) != this) {
-                break;
-            }
-            if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
+            if (city->getOrganism(x - 1, y) != nullptr && city->getOrganism(x - 1, y)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x - 1, y), x - 1, y);
+            } else if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
                 x--;
             }
             break;
         case SOUTH:
-            if (city->getOrganism(x, y) != this) {
-                break;
-            }
-            if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
+            if (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x + 1, y), x + 1, y);
+            } else if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
                 x++;
             }
-            break;
         case NORTHWEST:
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
+            if (city->getOrganism(x - 1, y - 1) != nullptr &&
+                city->getOrganism(x - 1, y - 1)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x - 1, y - 1), x - 1, y - 1);
+
+            } else if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
                 city->setOrganism(this, x - 1, y - 1);
                 city->setOrganism(nullptr, x, y);
                 x--;
@@ -113,18 +111,25 @@ void Zombie::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
+            if (city->getOrganism(x + 1, y - 1) != nullptr &&
+                city->getOrganism(x + 1, y - 1)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x + 1, y - 1), x + 1, y - 1);
+            } else if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
                 city->setOrganism(this, x + 1, y - 1);
                 city->setOrganism(nullptr, x, y);
                 x++;
                 y--;
             }
             break;
+            //TODO: Southeast and Northeast bugged
         case SOUTHEAST:
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
+            /*if (city->getOrganism(x + 1, y + 1) != nullptr &&
+                city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x + 1, y + 1)) {
+                city->setOrganism(new Zombie(*city, x + 1, y + 1), x + 1, y + 1);
+            } */else if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
                 city->setOrganism(this, x + 1, y + 1);
                 city->setOrganism(nullptr, x, y);
                 x++;
@@ -135,7 +140,10 @@ void Zombie::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
+            /*if (city->getOrganism(x - 1, y + 1) != nullptr &&
+                city->getOrganism(x - 1, y + 1)->getSpecies() == "Human") {
+                city->setOrganism(new Zombie(*city, x - 1, y + 1), x - 1, y + 1);
+            }*/ else if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
                 city->setOrganism(this, x - 1, y + 1);
                 city->setOrganism(nullptr, x, y);
                 x--;
