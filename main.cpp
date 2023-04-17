@@ -12,14 +12,8 @@
 
 int main() {
     City city;
-    Human humans[20*20];
+    Human humans[20 * 20];
     Zombie zombies[ZOMBIE_STARTCOUNT];
-    int bredHumanCount = 0;
-    //Zombie test = *new Zombie(city);
-    //Human test2 = *new Human(city);
-    //test.setPosition(&test);
-    //test2.setPosition(&test2);
-
 
     //Generate humans and zombies
     for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
@@ -49,11 +43,10 @@ int main() {
     }
 
 
-
     int iterations = 1;
-    while (iterations < 20) {
+    while (iterations < 1000) {
         //Human behaviour - Move, Breed
-        for (int i = 0; i < HUMAN_STARTCOUNT;i++){
+        for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
             humans[i].move();
             if (humans[i].getBreedingStatus()) {
                 // Checks the cardinal directions
@@ -62,7 +55,7 @@ int main() {
                 };
                 int direction = humans[i].viableBreedingGrounds();
                 if (direction != 4) {
-                    switch(direction){
+                    switch (direction) {
                         case WEST:
                             humans[i] = Human(city, (humans[i].getX() + 0), (humans[i].getY() - 1));
                             break;
@@ -86,20 +79,33 @@ int main() {
             }
         }
 
-        for (int i = 0; i< ZOMBIE_STARTCOUNT;i++){
+        for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
             zombies[i].move();
         }
 
         cout << city;
-
         cout << "Number of iterations: " << iterations << endl;
-        //TODO: Number of Zombies
-        //      Number of Humans
 
-        Sleep(1000);
+        Sleep(10);
         iterations++;
-    }
 
+        bool isEmptySpot = false;
+        for (int row = 0; row < GRID_WIDTH; row++) {
+            for (int col = 0; col < GRID_HEIGHT; col++) {
+                if (city.getOrganism(row, col) == nullptr) {
+                    isEmptySpot = true;
+                    break;
+                }
+            }
+            if (isEmptySpot) {
+                break;
+            }
+        }
+        if (!isEmptySpot) {
+            std::cout << "Game Over" << std::endl;
+            break;
+        }
+    }
     delete &city;
 
 }
