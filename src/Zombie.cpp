@@ -6,6 +6,7 @@
 #include <random>
 
 #include "../inc/Zombie.h"
+#include "../inc/Human.h"
 
 Zombie::Zombie() {
 
@@ -18,6 +19,7 @@ Zombie::Zombie(City &city, int x, int y) {
     this->y = y;
     this->canBreed = false;
     this->breedCounter = 8;
+    this->stepsSinceEaten = 0;
 }
 
 Zombie::~Zombie() = default;
@@ -53,12 +55,14 @@ void Zombie::move() {
     mt19937 gen(rd());
     uniform_int_distribution<> distrib(0, 6);
     int direction = distrib(gen);
-
+    stepsSinceEaten++;
     // Move the human up if the cell above is empty
     switch (direction) {
         case WEST:
             if (city->getOrganism(x, y - 1) != nullptr && city->getOrganism(x, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y - 1), x, y - 1);
+                canBreed = true;
+                stepsSinceEaten = 0;
             } else if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
@@ -68,6 +72,9 @@ void Zombie::move() {
         case EAST:
             if (city->getOrganism(x, y + 1) != nullptr && city->getOrganism(x, y + 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y + 1), x, y + 1);
+                canBreed = true;
+                stepsSinceEaten = 0;
+
             } else if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
@@ -77,20 +84,29 @@ void Zombie::move() {
         case NORTH:
             if (city->getOrganism(x - 1, y) != nullptr && city->getOrganism(x - 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y), x - 1, y);
+                canBreed = true;
+                stepsSinceEaten = 0;
+
             } else if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
                 x--;
+
             }
             break;
         case SOUTH:
             if (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x + 1, y), x + 1, y);
+                canBreed = true;
+                stepsSinceEaten = 0;
+
             } else if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
                 x++;
+
             }
+            break;
         case NORTHWEST:
             if (city->getOrganism(x, y) != this) {
                 break;
@@ -98,12 +114,15 @@ void Zombie::move() {
             if (city->getOrganism(x - 1, y - 1) != nullptr &&
                 city->getOrganism(x - 1, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y - 1), x - 1, y - 1);
+                canBreed = true;
+                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
                 city->setOrganism(this, x - 1, y - 1);
                 city->setOrganism(nullptr, x, y);
                 x--;
                 y--;
+
             }
             break;
 
@@ -114,11 +133,15 @@ void Zombie::move() {
             if (city->getOrganism(x + 1, y - 1) != nullptr &&
                 city->getOrganism(x + 1, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x + 1, y - 1), x + 1, y - 1);
+                canBreed = true;
+                stepsSinceEaten = 0;
+
             } else if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
                 city->setOrganism(this, x + 1, y - 1);
                 city->setOrganism(nullptr, x, y);
                 x++;
                 y--;
+
             }
             break;
             //TODO: Southeast and Northeast bugged
@@ -126,10 +149,13 @@ void Zombie::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            /*if (city->getOrganism(x + 1, y + 1) != nullptr &&
-                city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x + 1, y + 1)) {
+            if (city->getOrganism(x + 1, y + 1) != nullptr &&
+                city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x - 1, y + 1)) {
                 city->setOrganism(new Zombie(*city, x + 1, y + 1), x + 1, y + 1);
-            } */else if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
+                canBreed = true;
+                stepsSinceEaten = 0;
+
+            } else if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
                 city->setOrganism(this, x + 1, y + 1);
                 city->setOrganism(nullptr, x, y);
                 x++;
@@ -140,17 +166,30 @@ void Zombie::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            /*if (city->getOrganism(x - 1, y + 1) != nullptr &&
+            if (city->getOrganism(x - 1, y + 1) != nullptr &&
                 city->getOrganism(x - 1, y + 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y + 1), x - 1, y + 1);
-            }*/ else if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
+                canBreed = true;
+                stepsSinceEaten = 0;
+            } else if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
                 city->setOrganism(this, x - 1, y + 1);
                 city->setOrganism(nullptr, x, y);
                 x--;
                 y++;
+
             }
             break;
+        default:
+            break;
+
     }
+
+    //Sets the zombie to a human after 3 steps
+    if (stepsSinceEaten == 3) {
+        city->setOrganism(new Human(*city, x, y), x, y);
+        stepsSinceEaten = 0;
+    }
+
     if (breedCounter > 0) {
         canBreed = false;
         breedCounter--;
@@ -165,6 +204,9 @@ void Zombie::move() {
     }
 }
 
+void Zombie::starve() {
+
+}
 
 int Zombie::viableBreedingGrounds() {
     int direction = 0;

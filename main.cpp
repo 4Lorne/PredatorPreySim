@@ -49,7 +49,7 @@ int main() {
     int iterations = 1;
     while (iterations < 1000) {
         //Human behaviour - Move, Breed
-        /*for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
+        for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
             humans[i].move();
             if (humans[i].getBreedingStatus()) {
                 // Checks the cardinal directions
@@ -77,11 +77,11 @@ int main() {
                     humans[i].setBreedingStatus(false);
                 }
             }
-        }*/
+        }
 
         for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
             zombies[i].move();
-            /*if (zombies[i].getBreedingStatus()) {
+            if (zombies[i].getBreedingStatus()) {
                 // Checks the cardinal directions
                 int direction = zombies[i].viableBreedingGrounds();
                 if (direction != 4) {
@@ -106,7 +106,7 @@ int main() {
                     // Reset the breeding status of the parent if there are no viable locations
                     zombies[i].setBreedingStatus(true);
                 }
-            }*/
+            }
         }
 
         cout << city;
