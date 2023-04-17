@@ -106,8 +106,6 @@ void Human::move() {
     }
 }
 
-
-//TODO: Bug in code
 int Human::viableBreedingGrounds(){
     int direction = 0;
 

@@ -11,9 +11,12 @@
 //TODO: Humans get stuck on walls
 
 int main() {
+    enum {
+        WEST, NORTH, EAST, SOUTH
+    };
     City city;
     Human humans[20 * 20];
-    Zombie zombies[ZOMBIE_STARTCOUNT];
+    Zombie zombies[20 * 20];
 
     //Generate humans and zombies
     for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
@@ -50,9 +53,6 @@ int main() {
             humans[i].move();
             if (humans[i].getBreedingStatus()) {
                 // Checks the cardinal directions
-                enum {
-                    WEST, NORTH, EAST, SOUTH
-                };
                 int direction = humans[i].viableBreedingGrounds();
                 if (direction != 4) {
                     switch (direction) {
@@ -81,12 +81,38 @@ int main() {
 
         for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
             zombies[i].move();
+            if (zombies[i].getBreedingStatus()) {
+                // Checks the cardinal directions
+                int direction = zombies[i].viableBreedingGrounds();
+                if (direction != 4) {
+                    switch (direction) {
+                        case WEST:
+                            zombies[i] = Zombie(city, (zombies[i].getX() + 0), (zombies[i].getY() - 1));
+                            break;
+                        case NORTH:
+                            zombies[i] = Zombie(city, (zombies[i].getX() + 0), (zombies[i].getY() + 1));
+                            break;
+                        case EAST:
+                            zombies[i] = Zombie(city, (zombies[i].getX() - 1), (zombies[i].getY() + 0));
+                            break;
+                        case SOUTH:
+                            zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() + 0));
+                            break;
+                    }
+                    // Create a new human
+                    zombies[i] = Zombie(city, zombies[i].getX(), zombies[i].getY());
+                    zombies[i].setPosition(&zombies[i], zombies[i].getX(), zombies[i].getY());
+                } else {
+                    // Reset the breeding status of the parent if there are no viable locations
+                    zombies[i].setBreedingStatus(true);
+                }
+            }
         }
 
         cout << city;
         cout << "Number of iterations: " << iterations << endl;
 
-        Sleep(10);
+        Sleep(1000);
         iterations++;
 
         bool isEmptySpot = false;

@@ -25,40 +25,117 @@ string Zombie::getSpecies() {
     return this->species;
 }
 
+bool Zombie::getBreedingStatus() const{
+    return this->canBreed;
+}
+
+bool Zombie::setBreedingStatus(bool status){
+    this->canBreed = status;
+}
+
+int Zombie::getX(){
+    return x;
+}
+
+int Zombie::getY(){
+    return y;
+}
+
 Zombie::~Zombie() = default;
 
 
 void Zombie::move() {
-    int z = getRandomNumber();
+    int direction = getRandomNumber();
+
     // Move the human up if the cell above is empty
-    switch(z){
-        case 1:
-            if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
+    switch(direction){
+        case WEST:
+            if (city->getOrganism(x, y) != this) {
+                // The current cell is not empty, don't move
+                break;
+            }
+            if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
             }
             break;
-        case 2:
-            if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 2)) {
+        case EAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
                 y++;
             }
             break;
-        case 3:
-            if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 2, y)) {
+        case NORTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
                 x--;
             }
             break;
-        case 4:
-            if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 2, y)) {
+        case SOUTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
                 x++;
             }
             break;
     }
+    if (breedCounter > 0){
+        canBreed = false;
+        breedCounter--;
+    }
+    if (breedCounter == 0){
+        int x = viableBreedingGrounds();
+        if (x < 4){
+            canBreed = true;
+        } else {
+            breedCounter = 0;
+        }
+    }
 }
+
+int Zombie::viableBreedingGrounds(){
+    int direction = 0;
+
+    //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
+    while (direction < 4) {
+        switch (direction) {
+            case WEST:
+                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
+                    return direction;
+                }
+                break;
+            case EAST:
+                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
+                    return direction;
+                }
+                break;
+            case NORTH:
+                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
+                    return direction;
+                }
+                break;
+            case SOUTH:
+                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
+                    return direction;
+                }
+                break;
+            default:
+                break;
+        }
+        direction++;
+    }
+    return 4;
+}
+

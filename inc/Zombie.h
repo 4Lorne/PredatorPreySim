@@ -9,7 +9,9 @@
 
 
 class Zombie : public Organism{
-
+private:
+    bool canBreed;
+    int breedCounter;
 public:
     Zombie(); //Default
     explicit Zombie(City& city, int x, int y); //Constructor that assigns the zombie to a city
@@ -21,6 +23,15 @@ public:
     void move() override;
 
 
+    int viableBreedingGrounds();
+
+    bool getBreedingStatus() const;
+
+    bool setBreedingStatus(bool status);
+
+    int getX();
+
+    int getY();
 };
 
 #endif //HUMANZOMBIES_ZOMBIE_H
