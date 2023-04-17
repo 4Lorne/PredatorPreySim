@@ -144,14 +144,14 @@ void Zombie::move() {
 
             }
             break;
-            //TODO: Southeast and Northeast bugged
+
         case SOUTHEAST:
             if (city->getOrganism(x, y) != this) {
                 break;
             }
             if (city->getOrganism(x + 1, y + 1) != nullptr &&
                 city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x - 1, y + 1)) {
-                city->setOrganism(new Zombie(*city, x + 1, y + 1), x + 1, y + 1);
+                city->setOrganism(new Zombie(*city, x - 1, y + 1), x - 1, y + 1);
                 canBreed = true;
                 stepsSinceEaten = 0;
 
@@ -185,6 +185,7 @@ void Zombie::move() {
     }
 
     //Sets the zombie to a human after 3 steps
+    //TODO: Humans change back to zombies the next turn
     if (stepsSinceEaten == 3) {
         city->setOrganism(new Human(*city, x, y), x, y);
         stepsSinceEaten = 0;
@@ -211,7 +212,6 @@ void Zombie::starve() {
 int Zombie::viableBreedingGrounds() {
     int direction = 0;
 
-    //Starts from 0 and increments up until 8, at which case we know there are no viable spots.
     while (direction < 8) {
         switch (direction) {
             case WEST:
