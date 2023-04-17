@@ -18,7 +18,7 @@ int main() {
     //test2.setPosition(&test2);
 
 
-
+    //Generate humans and zombies
     for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
         int x = rand() % GRIDSIZE;
         int y = rand() % GRIDSIZE;
@@ -49,10 +49,13 @@ int main() {
 
     int iterations = 1;
     while (iterations < 20) {
-        //test.move();
+        for (int i = 0; i < HUMAN_STARTCOUNT;i++){
+            humans[i].move();
+        }
         //test2.move();
 
         cout << city;
+
         cout << "Number of iterations: " << iterations << endl;
         //TODO: Number of Zombies
         //      Number of Humans

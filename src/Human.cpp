@@ -47,6 +47,10 @@ void Human::move() {
     // Move the human up if the cell above is empty
     switch(direction){
         case WEST:
+            if (city->getOrganism(x, y) != this) {
+                // The current cell is not empty, dont move
+                break;
+            }
             if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
@@ -54,6 +58,9 @@ void Human::move() {
             }
             break;
         case EAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 2)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
@@ -61,6 +68,9 @@ void Human::move() {
             }
             break;
         case NORTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 2, y)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
@@ -68,6 +78,9 @@ void Human::move() {
             }
             break;
         case SOUTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 2, y)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
@@ -88,12 +101,12 @@ void Human::move() {
 }
 
 
-
+//TODO: Bug in code
 int Human::viableBreedingGrounds(){
     int direction = 0;
 
     //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
-    while (direction < 5){
+    /*while (direction < 5){
         switch (direction){
             case WEST:
                 if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
@@ -120,7 +133,7 @@ int Human::viableBreedingGrounds(){
                 direction++;
                 break;
         }
-    }
+    }*/
     return 5;
 }
 
