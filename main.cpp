@@ -52,6 +52,9 @@ int main() {
         for (int i = 0; i < HUMAN_STARTCOUNT;i++){
             humans[i].move();
         }
+        for (int i = 0; i< ZOMBIE_STARTCOUNT;i++){
+            zombies[i].move();
+        }
         //test2.move();
 
         cout << city;

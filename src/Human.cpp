@@ -93,10 +93,12 @@ void Human::move() {
         breedCounter--;
     }
     if (breedCounter == 0){
-        if (viableBreedingGrounds() < 5){
+        int x = viableBreedingGrounds();
+        if (x < 5){
             canBreed = true;
+        } else {
+            breedCounter = 3;
         }
-        breedCounter = 3;
     }
 }
 
@@ -106,34 +108,33 @@ int Human::viableBreedingGrounds(){
     int direction = 0;
 
     //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
-    /*while (direction < 5){
-        switch (direction){
+    while (direction < 5) {
+        switch (direction) {
             case WEST:
-                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 2)) {
+                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                     return direction;
                 }
-                direction++;
                 break;
             case EAST:
-                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 2)){
+                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
                     return direction;
                 }
-                direction++;
                 break;
             case NORTH:
-                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 2, y)){
+                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
                     return direction;
                 }
-                direction++;
                 break;
             case SOUTH:
-                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 2, y)){
+                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
                     return direction;
                 }
-                direction++;
+                break;
+            default:
                 break;
         }
-    }*/
+        direction++;
+    }
     return 5;
 }
 
