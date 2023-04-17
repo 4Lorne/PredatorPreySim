@@ -157,8 +157,8 @@ void Zombie::move() {
 int Zombie::viableBreedingGrounds(){
     int direction = 0;
 
-    //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
-    while (direction < 4) {
+    //Starts from 0 and increments up until 8, at which case we know there are no viable spots.
+    while (direction < 8) {
         switch (direction) {
             case WEST:
                 if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
@@ -180,11 +180,31 @@ int Zombie::viableBreedingGrounds(){
                     return direction;
                 }
                 break;
+            case NORTHWEST:
+                if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
+                    return direction;
+                }
+                break;
+            case SOUTHWEST:
+                if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
+                    return direction;
+                }
+                break;
+            case SOUTHEAST:
+                if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
+                    return direction;
+                }
+                break;
+            case NORTHEAST:
+                if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
+                    return direction;
+                }
+                break;
             default:
                 break;
         }
         direction++;
     }
-    return 4;
+    return 8;
 }
 
