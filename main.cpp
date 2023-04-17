@@ -112,7 +112,7 @@ int main() {
         cout << city;
         cout << "Number of iterations: " << iterations << endl;
 
-        Sleep(1000);
+        Sleep(10);
         iterations++;
 
         bool isEmptySpot = false;

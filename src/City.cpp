@@ -57,7 +57,7 @@ ostream &operator<<(ostream &output, City &city) {
 }
 
 bool City::inBounds(int x, int y) {
-    return (x >= 0 && x < GRIDSIZE && y >= 0 && y < GRIDSIZE);
+    return (x >= 1 && x < 19 && y >= 1 && y < 19);
 }
 
 

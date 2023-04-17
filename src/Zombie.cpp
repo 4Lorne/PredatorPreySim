@@ -16,8 +16,13 @@ Zombie::Zombie(City &city, int x, int y) {
     this->city = &city;
     this->x = x;
     this->y = y;
+    this->canBreed = false;
+    this->breedCounter = 8;
 }
 
+Zombie::~Zombie() = default;
+
+//Getters and Setters
 void Zombie::setSpecies(string species) {
     this->species = std::move(species);
 }
@@ -26,25 +31,23 @@ string Zombie::getSpecies() {
     return this->species;
 }
 
-bool Zombie::getBreedingStatus() const{
+bool Zombie::getBreedingStatus() const {
     return this->canBreed;
 }
 
-bool Zombie::setBreedingStatus(bool status){
+bool Zombie::setBreedingStatus(bool status) {
     this->canBreed = status;
 }
 
-int Zombie::getX(){
+int Zombie::getX() {
     return x;
 }
 
-int Zombie::getY(){
+int Zombie::getY() {
     return y;
 }
 
-Zombie::~Zombie() = default;
-
-
+//Functions
 void Zombie::move() {
     random_device rd;
     mt19937 gen(rd());
@@ -52,7 +55,7 @@ void Zombie::move() {
     int direction = distrib(gen);
 
     // Move the human up if the cell above is empty
-    switch(direction){
+    switch (direction) {
         case WEST:
             if (city->getOrganism(x, y) != this) {
                 // The current cell is not empty, don't move
@@ -140,13 +143,13 @@ void Zombie::move() {
             }
             break;
     }
-    if (breedCounter > 0){
+    if (breedCounter > 0) {
         canBreed = false;
         breedCounter--;
     }
-    if (breedCounter == 0){
+    if (breedCounter == 0) {
         int x = viableBreedingGrounds();
-        if (x < 4){
+        if (x < 4) {
             canBreed = true;
         } else {
             breedCounter = 0;
@@ -154,7 +157,8 @@ void Zombie::move() {
     }
 }
 
-int Zombie::viableBreedingGrounds(){
+
+int Zombie::viableBreedingGrounds() {
     int direction = 0;
 
     //Starts from 0 and increments up until 8, at which case we know there are no viable spots.
@@ -207,4 +211,3 @@ int Zombie::viableBreedingGrounds(){
     }
     return 8;
 }
-
