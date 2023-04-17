@@ -12,7 +12,7 @@ class Zombie : public Organism{
 
 public:
     Zombie(); //Default
-    explicit Zombie(City& city); //Constructor that assigns the zombie to a city
+    explicit Zombie(City& city, int x, int y); //Constructor that assigns the zombie to a city
     ~Zombie() override; //Destructor
 
     void setSpecies(string species);

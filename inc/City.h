@@ -30,7 +30,7 @@ public:
     static bool inBounds(int x, int y);
 
     //Overloaded output operator
-    friend ostream& operator<<(ostream& output, City city); //Override for output
+    friend ostream& operator<<(ostream& output, City& city); //Override for output
 
     Organism *grid[GRID_HEIGHT][GRID_WIDTH]{};
 };

@@ -36,7 +36,7 @@ public:
     bool isTurn(); //Checks if it is the species turn
 
     virtual void move() {}
-    int getRandomNumber();
+    static int getRandomNumber();
 
     void setPosition(Organism *organism, int x, int y);
 };

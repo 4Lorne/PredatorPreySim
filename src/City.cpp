@@ -27,7 +27,7 @@ void City::setOrganism(Organism* organism, int x, int y) {
 }
 
 //Prints the city
-ostream &operator<<(ostream &output, City city) {
+ostream &operator<<(ostream &output, City &city) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Get handle to console
     for (int i = 0; i < GRID_HEIGHT; i++){
         for (int j = 0; j < GRID_WIDTH; j++){
@@ -36,11 +36,11 @@ ostream &operator<<(ostream &output, City city) {
             } else if(j == 0 || j == GRID_WIDTH - 1){
                 output << "| ";
             } else if (city.grid[i][j] != nullptr){ //If not a null pointer, checks for human or zombie.
-                if ((city.grid[i][j])->getSpecies() == "Zombie"){
+                if ((city.grid[i][j])->getSpecies() == std::string("Zombie")){
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
                     output << "Z ";
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset to default color
-                } else if ((city.grid[i][j])->getSpecies() == "Human"){
+                } else if ((city.grid[i][j])->getSpecies() == std::string("Human")){
                     SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
                     output << "H ";
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset to default color

@@ -14,7 +14,7 @@ private:
     int breedCounter;
 public:
     Human();
-     Human(City& city);
+     Human(City& city, int x, int y);
     ~Human() override;
 
     void setSpecies(string species);

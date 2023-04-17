@@ -5,7 +5,7 @@
 #include <random>
 #include "../inc/Human.h"
 
-Human::Human(City &city) {
+Human::Human(City &city, int x, int y) {
     this->species = "Human";
     this->city = &city;
     this->canBreed = false;
@@ -26,7 +26,6 @@ void Human::setSpecies(string species) {
 }
 string Human::getSpecies() {
     return this->species;
-
 }
 
 int Human::getX(){

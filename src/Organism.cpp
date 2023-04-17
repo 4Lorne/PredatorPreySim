@@ -38,7 +38,9 @@ void Organism::setPosition(Organism *organism) {
     }
 }
 void Organism::setPosition(Organism *organism, int x, int y){
-    city->setOrganism(organism, x, y);
+    this->x = x;
+    this->y = y;
+    city->setOrganism(this, x, y);
 }
 
 
