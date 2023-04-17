@@ -28,6 +28,8 @@ public:
     int getX();
 
     int getY();
+
+    bool setBreedingStatus(bool status);
 };
 
 #endif //HUMANZOMBIES_HUMAN_H

@@ -40,6 +40,10 @@ bool Human::getBreedingStatus() const{
     return this->canBreed;
 }
 
+bool Human::setBreedingStatus(bool status){
+    this->canBreed = status;
+}
+
 
 void Human::move() {
     int direction = getRandomNumber();
@@ -94,7 +98,7 @@ void Human::move() {
     }
     if (breedCounter == 0){
         int x = viableBreedingGrounds();
-        if (x < 5){
+        if (x < 4){
             canBreed = true;
         } else {
             breedCounter = 3;
@@ -108,7 +112,7 @@ int Human::viableBreedingGrounds(){
     int direction = 0;
 
     //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
-    while (direction < 5) {
+    while (direction < 4) {
         switch (direction) {
             case WEST:
                 if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
@@ -135,6 +139,6 @@ int Human::viableBreedingGrounds(){
         }
         direction++;
     }
-    return 5;
+    return 4;
 }
 
