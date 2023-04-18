@@ -13,11 +13,11 @@ using namespace std;
 
 class Organism {
 protected:
-    int x;
-    int y;
-    bool moved;
+    int x{};
+    int y{};
+    bool moved{};
     string species;
-    City *city;
+    City *city{};
 
     enum {
         WEST, NORTH, EAST, SOUTH, NORTHWEST, SOUTHWEST, SOUTHEAST, NORTHEAST

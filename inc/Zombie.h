@@ -34,7 +34,9 @@ public:
 
     int getY();
 
-    void starve();
+    int getStepsSinceEaten() const;
+
+    void setStepsSinceEaten(int steps);
 };
 
 #endif //HUMANZOMBIES_ZOMBIE_H

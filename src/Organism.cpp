@@ -7,9 +7,7 @@
 
 
 //Constructors
-Organism::Organism() {
-
-}
+Organism::Organism() = default;
 Organism::Organism(City *city, int x, int y) {
     this->city = city;
     this->x = x;
@@ -18,10 +16,10 @@ Organism::Organism(City *city, int x, int y) {
 Organism::~Organism() = default;
 
 //Getters and Setters
-void Organism::setPosition(Organism *organism, int x, int y){ //Sets the position of an organism in a specific city
-    this->x = x;
-    this->y = y;
-    city->setOrganism(organism, x, y);
+void Organism::setPosition(Organism *organism, int j, int k){ //Sets the position of an organism in a specific city
+    this->x = j;
+    this->y = k;
+    city->setOrganism(organism, j, k);
 }
 
 int Organism::getRandomNumber() { //Generates a random number between 0-3 (N,S,E,W), used for human movement

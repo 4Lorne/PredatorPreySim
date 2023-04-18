@@ -1,18 +1,14 @@
 #include <iostream>
 #include <synchapi.h>
 #include <vector>
-#include <random>
 
 #include "inc/Organism.h"
 #include "inc/Zombie.h"
 #include "inc/Human.h"
 
-
-//TODO: Humans get stuck on walls
-
 int main() {
     enum {
-        WEST, NORTH, EAST, SOUTH
+        WEST, NORTH, EAST, SOUTH, NORTHWEST, SOUTHWEST, SOUTHEAST, NORTHEAST
     };
     City city;
     Human humans[20 * 20];
@@ -85,7 +81,6 @@ int main() {
             zombies[i].move(); //Movement
             if (zombies[i].getBreedingStatus()) { //Breeding
                 // Checks the cardinal directions
-                //TODO: Add diagonals to the check
                 //      Add move counter to main
                 int direction = zombies[i].viableBreedingGrounds();
                 if (direction != 8) {
@@ -102,15 +97,32 @@ int main() {
                         case SOUTH:
                             zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() + 0));
                             break;
+                        case NORTHWEST:
+                            zombies[i] = Zombie(city,(zombies[i].getX() - 1), (zombies[i].getY() - 1));
+                            break;
+                        case SOUTHWEST:
+                            zombies[i] = Zombie(city,(zombies[i].getX() + 1), (zombies[i].getY() - 1));
+                            break;
+                        case SOUTHEAST:
+                            zombies[i] = Zombie(city,(zombies[i].getX() + 1), (zombies[i].getY() + 1));
+                            break;
+                        case NORTHEAST:
+                            zombies[i] = Zombie(city,(zombies[i].getX() - 1), (zombies[i].getY() + 1));
+                            break;
                         default:
                             break;
                     }
-                    // Create a new human
+                    //Sets the zombie to a human after 3 steps
+                    if (zombies[i].getStepsSinceEaten() == 3) {
+                        humans[i] = Human(city, zombies[i].getX(), zombies[i].getY()), zombies[i].getX(), zombies[i].getY();
+                        humans[i].setPosition(&humans[i], humans[i].getX(), humans[i].getY());
+                        zombies[i].setStepsSinceEaten(0);
+                    }
+                    // Create a new Zombie
                     zombies[i] = Zombie(city, zombies[i].getX(), zombies[i].getY());
                     zombies[i].setPosition(&zombies[i], zombies[i].getX(), zombies[i].getY());
                 } else {
-                    // Reset the breeding status of the parent if there are no viable locations
-                    //TODO: Work on breeding logic
+                    // Keep the breeding status if they have been fed and there are no viable humans
                     zombies[i].setBreedingStatus(true);
                 }
             }

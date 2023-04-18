@@ -9,9 +9,9 @@
 #include "../inc/Organism.h"
 
 City::City(){ //Fills the city with nullptrs
-    for (int i = 0; i < GRID_HEIGHT; i++) {
-        for (int j = 0; j < GRID_WIDTH; j++) {
-            grid[i][j] = nullptr;
+    for (auto & i : grid) {
+        for (auto & j : i) {
+            j = nullptr;
         }
     }
 }

@@ -15,9 +15,7 @@ Human::Human(City &city, int x, int y) {
     this->y = y;
 }
 
-Human::Human() {
-
-}
+Human::Human() = default;
 Human::~Human() = default;
 
 void Human::setSpecies(string species) {
@@ -40,7 +38,7 @@ bool Human::getBreedingStatus() const{
     return this->canBreed;
 }
 
-bool Human::setBreedingStatus(bool status){
+void Human::setBreedingStatus(bool status){
     this->canBreed = status;
 }
 

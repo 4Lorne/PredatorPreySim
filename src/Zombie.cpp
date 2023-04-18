@@ -29,6 +29,14 @@ void Zombie::setSpecies(string species) {
     this->species = std::move(species);
 }
 
+int Zombie::getStepsSinceEaten() const{
+    return this->stepsSinceEaten;
+}
+
+void Zombie::setStepsSinceEaten(int steps){
+    this->stepsSinceEaten = steps;
+}
+
 string Zombie::getSpecies() {
     return this->species;
 }
@@ -68,7 +76,6 @@ void Zombie::move() {
             if (city->getOrganism(x, y - 1) != nullptr && city->getOrganism(x, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y - 1), x, y - 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
             }
                 //If it is a null pointer it will move without converting anything
             else if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
@@ -84,7 +91,6 @@ void Zombie::move() {
             if (city->getOrganism(x, y + 1) != nullptr && city->getOrganism(x, y + 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y + 1), x, y + 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
                 city->setOrganism(this, x, y + 1);
@@ -99,7 +105,6 @@ void Zombie::move() {
             if (city->getOrganism(x - 1, y) != nullptr && city->getOrganism(x - 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y), x - 1, y);
                 canBreed = true;
-                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
                 city->setOrganism(this, x - 1, y);
@@ -115,7 +120,6 @@ void Zombie::move() {
             if (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x + 1, y), x + 1, y);
                 canBreed = true;
-                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
                 city->setOrganism(this, x + 1, y);
@@ -132,7 +136,6 @@ void Zombie::move() {
                 city->getOrganism(x - 1, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y - 1), x - 1, y - 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
                 city->setOrganism(this, x - 1, y - 1);
@@ -151,7 +154,6 @@ void Zombie::move() {
                 city->getOrganism(x + 1, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x + 1, y - 1), x + 1, y - 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
 
             } else if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
                 city->setOrganism(this, x + 1, y - 1);
@@ -170,7 +172,6 @@ void Zombie::move() {
                 city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x + 1, y + 1)) {
                 city->setOrganism(new Zombie(*city, x + 1, y + 1), x + 1, y + 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
             } else if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
                 city->setOrganism(this, x + 1, y + 1);
                 city->setOrganism(nullptr, x, y);
@@ -187,7 +188,6 @@ void Zombie::move() {
                 city->getOrganism(x - 1, y + 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y + 1), x - 1, y + 1);
                 canBreed = true;
-                stepsSinceEaten = 0;
             } else if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
                 city->setOrganism(this, x - 1, y + 1);
                 city->setOrganism(nullptr, x, y);
@@ -199,15 +199,6 @@ void Zombie::move() {
         default:
             break;
 
-    }
-
-    //Sets the zombie to a human after 3 steps
-    //TODO: Humans change back to zombies the next turn
-    if (stepsSinceEaten == 3) {
-        city->setOrganism(nullptr, x, y);
-        city->setOrganism(new Human(*city, x, y), x, y);
-        stepsSinceEaten = 0;
-        return;
     }
 
     if (breedCounter > 0) {
@@ -224,54 +215,62 @@ void Zombie::move() {
     }
 }
 
-void Zombie::starve() {
-
-}
 
 //Checks the directions for humans & zombies
-//TODO: Include humans
 int Zombie::viableBreedingGrounds() {
     int direction = 0;
     //If there are no valid locations, this function will return 8
     while (direction < 8) {
         switch (direction) {
             case WEST:
-                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
+                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1) ||
+                    (city->getOrganism(x, y - 1) != nullptr && city->getOrganism(x, y - 1)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case EAST:
-                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
+                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1) ||
+                    (city->getOrganism(x, y + 1) != nullptr && city->getOrganism(x, y + 1)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case NORTH:
-                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
+                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y) ||
+                    (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case SOUTH:
-                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
+                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y) ||
+                    (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case NORTHWEST:
-                if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1)) {
+                if (city->getOrganism(x - 1, y - 1) == nullptr && City::inBounds(x - 1, y - 1) ||
+                    (city->getOrganism(x - 1, y - 1) != nullptr &&
+                     city->getOrganism(x - 1, y - 1)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case SOUTHWEST:
-                if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1)) {
+                if (city->getOrganism(x + 1, y - 1) == nullptr && City::inBounds(x + 1, y - 1) ||
+                    (city->getOrganism(x + 1, y - 1) != nullptr &&
+                     city->getOrganism(x + 1, y - 1)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;
             case SOUTHEAST:
-                if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
+                if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1) ||
+                    (city->getOrganism(x + 1, y + 1) != nullptr &&
+                     city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x + 1, y + 1))) {
                     return direction;
                 }
                 break;
             case NORTHEAST:
-                if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1)) {
+                if (city->getOrganism(x - 1, y + 1) == nullptr && City::inBounds(x - 1, y + 1) ||
+                    (city->getOrganism(x - 1, y + 1) != nullptr &&
+                     city->getOrganism(x - 1, y + 1)->getSpecies() == "Human")) {
                     return direction;
                 }
                 break;

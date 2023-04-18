@@ -10,8 +10,8 @@
 
 class Human : public Organism{
 private:
-    bool canBreed;
-    int breedCounter;
+    bool canBreed{};
+    int breedCounter{};
 public:
     Human();
      Human(City& city, int x, int y);
@@ -29,7 +29,7 @@ public:
 
     int getY();
 
-    bool setBreedingStatus(bool status);
+    void setBreedingStatus(bool status);
 };
 
 #endif //HUMANZOMBIES_HUMAN_H
