@@ -15,8 +15,6 @@ class Organism {
 protected:
     int x;
     int y;
-    int width;
-    int height;
     bool moved;
     string species;
     City *city;
@@ -31,14 +29,13 @@ public:
     virtual ~Organism(); //Destructor
 
     virtual string getSpecies() = 0;
-    void setPosition(Organism *organism); //Position in the city
+    void setPosition(Organism *organism, int x, int y); //Sets position in the city
     void endTurn(); //Ends the turn for the species
     bool isTurn(); //Checks if it is the species turn
 
     virtual void move() {}
     static int getRandomNumber();
 
-    void setPosition(Organism *organism, int x, int y);
 };
 
 #endif //HUMANZOMBIES_ORGANISM_H

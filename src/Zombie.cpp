@@ -51,25 +51,36 @@ int Zombie::getY() {
 
 //Functions
 void Zombie::move() {
+    //Generates a random number between 0 and 7 for each of the cardinal directions
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(0, 6);
+    uniform_int_distribution<> distrib(0, 7);
     int direction = distrib(gen);
+
     stepsSinceEaten++;
-    // Move the human up if the cell above is empty
     switch (direction) {
         case WEST:
+            //Checks if it is interacting with itself
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            //Checks if the space is a human and if it is replaces the human with a zombie
             if (city->getOrganism(x, y - 1) != nullptr && city->getOrganism(x, y - 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y - 1), x, y - 1);
                 canBreed = true;
                 stepsSinceEaten = 0;
-            } else if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
+            }
+                //If it is a null pointer it will move without converting anything
+            else if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
             }
             break;
         case EAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x, y + 1) != nullptr && city->getOrganism(x, y + 1)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x, y + 1), x, y + 1);
                 canBreed = true;
@@ -82,6 +93,9 @@ void Zombie::move() {
             }
             break;
         case NORTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x - 1, y) != nullptr && city->getOrganism(x - 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x - 1, y), x - 1, y);
                 canBreed = true;
@@ -95,6 +109,9 @@ void Zombie::move() {
             }
             break;
         case SOUTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
             if (city->getOrganism(x + 1, y) != nullptr && city->getOrganism(x + 1, y)->getSpecies() == "Human") {
                 city->setOrganism(new Zombie(*city, x + 1, y), x + 1, y);
                 canBreed = true;
@@ -150,11 +167,10 @@ void Zombie::move() {
                 break;
             }
             if (city->getOrganism(x + 1, y + 1) != nullptr &&
-                city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x - 1, y + 1)) {
-                city->setOrganism(new Zombie(*city, x - 1, y + 1), x - 1, y + 1);
+                city->getOrganism(x + 1, y + 1)->getSpecies() == "Human" && City::inBounds(x + 1, y + 1)) {
+                city->setOrganism(new Zombie(*city, x + 1, y + 1), x + 1, y + 1);
                 canBreed = true;
                 stepsSinceEaten = 0;
-
             } else if (city->getOrganism(x + 1, y + 1) == nullptr && City::inBounds(x + 1, y + 1)) {
                 city->setOrganism(this, x + 1, y + 1);
                 city->setOrganism(nullptr, x, y);
@@ -162,6 +178,7 @@ void Zombie::move() {
                 y++;
             }
             break;
+
         case NORTHEAST:
             if (city->getOrganism(x, y) != this) {
                 break;
@@ -187,8 +204,10 @@ void Zombie::move() {
     //Sets the zombie to a human after 3 steps
     //TODO: Humans change back to zombies the next turn
     if (stepsSinceEaten == 3) {
+        city->setOrganism(nullptr, x, y);
         city->setOrganism(new Human(*city, x, y), x, y);
         stepsSinceEaten = 0;
+        return;
     }
 
     if (breedCounter > 0) {
@@ -209,9 +228,11 @@ void Zombie::starve() {
 
 }
 
+//Checks the directions for humans & zombies
+//TODO: Include humans
 int Zombie::viableBreedingGrounds() {
     int direction = 0;
-
+    //If there are no valid locations, this function will return 8
     while (direction < 8) {
         switch (direction) {
             case WEST:

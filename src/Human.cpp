@@ -51,10 +51,11 @@ void Human::move() {
     // Move the human up if the cell above is empty
     switch(direction){
         case WEST:
+            //Checks if it is interacting with itself
             if (city->getOrganism(x, y) != this) {
-                // The current cell is not empty, don't move
                 break;
             }
+            //Checks if the space is a null pointer and moves there
             if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
@@ -91,11 +92,16 @@ void Human::move() {
                 x++;
             }
             break;
+        default:
+            break;
     }
+    //Every step the breed counter decreases
     if (breedCounter > 0){
         canBreed = false;
         breedCounter--;
     }
+    //Once it is at 0, if there are any viable breeding spots it will happen
+    //If there are no viable spots, they lost their chance and it resets
     if (breedCounter == 0){
         int x = viableBreedingGrounds();
         if (x < 4){
@@ -110,6 +116,7 @@ int Human::viableBreedingGrounds(){
     int direction = 0;
 
     //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
+    //If there are no valid locations, this function will return 5
     while (direction < 4) {
         switch (direction) {
             case WEST:

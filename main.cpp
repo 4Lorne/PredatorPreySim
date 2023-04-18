@@ -50,8 +50,8 @@ int main() {
     while (iterations < 1000) {
         //Human behaviour - Move, Breed
         for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
-            humans[i].move();
-            if (humans[i].getBreedingStatus()) {
+            humans[i].move(); //Movement
+            if (humans[i].getBreedingStatus()) { //Breeding
                 // Checks the cardinal directions
                 int direction = humans[i].viableBreedingGrounds();
                 if (direction != 4) {
@@ -68,6 +68,8 @@ int main() {
                         case SOUTH:
                             humans[i] = Human(city, (humans[i].getX() + 1), (humans[i].getY() + 0));
                             break;
+                        default:
+                            break;
                     }
                     // Create a new human
                     humans[i] = Human(city, humans[i].getX(), humans[i].getY());
@@ -80,11 +82,13 @@ int main() {
         }
 
         for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
-            zombies[i].move();
-            if (zombies[i].getBreedingStatus()) {
+            zombies[i].move(); //Movement
+            if (zombies[i].getBreedingStatus()) { //Breeding
                 // Checks the cardinal directions
+                //TODO: Add diagonals to the check
+                //      Add move counter to main
                 int direction = zombies[i].viableBreedingGrounds();
-                if (direction != 4) {
+                if (direction != 8) {
                     switch (direction) {
                         case WEST:
                             zombies[i] = Zombie(city, (zombies[i].getX() + 0), (zombies[i].getY() - 1));
@@ -98,12 +102,15 @@ int main() {
                         case SOUTH:
                             zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() + 0));
                             break;
+                        default:
+                            break;
                     }
                     // Create a new human
                     zombies[i] = Zombie(city, zombies[i].getX(), zombies[i].getY());
                     zombies[i].setPosition(&zombies[i], zombies[i].getX(), zombies[i].getY());
                 } else {
                     // Reset the breeding status of the parent if there are no viable locations
+                    //TODO: Work on breeding logic
                     zombies[i].setBreedingStatus(true);
                 }
             }
@@ -115,6 +122,8 @@ int main() {
         Sleep(10);
         iterations++;
 
+        //If there are no empty spots, the game is over.
+        //TODO: Check for all of one type
         bool isEmptySpot = false;
         for (int row = 0; row < GRID_WIDTH; row++) {
             for (int col = 0; col < GRID_HEIGHT; col++) {

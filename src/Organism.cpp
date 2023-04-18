@@ -17,36 +17,18 @@ Organism::Organism(City *city, int x, int y) {
 }
 Organism::~Organism() = default;
 
-
-//Methods
-
-//Randomly assigns an x and y position
-void Organism::setPosition(Organism *organism) {
-
-    //https://stackoverflow.com/a/38368609
-    //Generates random numbers, uses another random number generator, and then a distribution system
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dist(1, 18);
-
-    x = dist(gen);
-    y = dist(gen);
-
-    //Checks if the position is empty
-    if (city->getOrganism(x,y) == nullptr){
-        city->setOrganism(organism, x, y);
-    }
-}
-void Organism::setPosition(Organism *organism, int x, int y){
+//Getters and Setters
+void Organism::setPosition(Organism *organism, int x, int y){ //Sets the position of an organism in a specific city
     this->x = x;
     this->y = y;
-    city->setOrganism(this, x, y);
+    city->setOrganism(organism, x, y);
 }
 
-
-int Organism::getRandomNumber() {
+int Organism::getRandomNumber() { //Generates a random number between 0-3 (N,S,E,W), used for human movement
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 3);
     return distrib(gen);
 }
+
+
