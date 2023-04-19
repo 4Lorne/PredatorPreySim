@@ -60,7 +60,7 @@ void Zombie::move() {
     //Generates a random number between 0 and 7 for each of the cardinal directions
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(0, 0);
+    uniform_int_distribution<> distrib(0, 7);
     int direction = distrib(gen);
 
     stepsSinceEaten++;
@@ -68,15 +68,91 @@ void Zombie::move() {
     switch (direction){
         case WEST:
             //Checks if it is interacting with another organism
-            /*if (city->getOrganism(x, y) != this) {
+            if (city->getOrganism(x, y) != this) {
                 break;
-            }*/
+            }
             //Checks if the space is a null pointer and moves there
-            if (city->getOrganism(x, y - 1) == nullptr && City::isEmptyAndInBounds(x,y-1,city)) {
+            if (city->getOrganism(x, y - 1) != nullptr && City::isEmptyAndInBounds(x,y-1,city)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
             }
+            break;
+        case EAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x, y + 1) == nullptr && City::isEmptyAndInBounds(x,y+1,city)) {
+                city->setOrganism(this, x, y + 1);
+                city->setOrganism(nullptr, x, y);
+                y++;
+            }
+            break;
+        case NORTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y) == nullptr && City::isEmptyAndInBounds(x-1,y,city)) {
+                city->setOrganism(this, x - 1, y);
+                city->setOrganism(nullptr, x, y);
+                x--;
+            }
+            break;
+        case SOUTH:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y) == nullptr && City::isEmptyAndInBounds(x+1,y,city)) {
+                city->setOrganism(this, x + 1, y);
+                city->setOrganism(nullptr, x, y);
+                x++;
+            }
+            break;
+        case NORTHWEST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y-1) == nullptr && City::isEmptyAndInBounds(x-1,y-1,city)) {
+                city->setOrganism(this, x - 1, y-1);
+                city->setOrganism(nullptr, x, y);
+                x--;
+                y--;
+            }
+            break;
+        case SOUTHWEST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y-1) == nullptr && City::isEmptyAndInBounds(x+1,y-1,city)) {
+                city->setOrganism(this, x + 1, y -1);
+                city->setOrganism(nullptr, x, y);
+                x++;
+                y--;
+            }
+            break;
+        case SOUTHEAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x + 1, y+1) == nullptr && City::isEmptyAndInBounds(x+1,y+1,city)) {
+                city->setOrganism(this, x + 1, y +1);
+                city->setOrganism(nullptr, x, y);
+                x++;
+                y++;
+            }
+            break;
+        case NORTHEAST:
+            if (city->getOrganism(x, y) != this) {
+                break;
+            }
+            if (city->getOrganism(x - 1, y+1) == nullptr && City::isEmptyAndInBounds(x-1,y+1,city)) {
+                city->setOrganism(this, x - 1, y+1);
+                city->setOrganism(nullptr, x, y);
+                x--;
+                y++;
+            }
+            break;
+        default:
             break;
     }
 

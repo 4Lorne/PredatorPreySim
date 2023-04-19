@@ -33,7 +33,7 @@ int main() {
     }
 
     //Generate zombies on the map
-    vector<Zombie> zombies(ZOMBIE_STARTCOUNT);
+    vector<Zombie> zombies;
     zombies.reserve(20*20);
     for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
         int x = rand() % GRIDSIZE;
@@ -89,7 +89,7 @@ int main() {
             }
         }
         for (auto& zombie : zombies) {
-            //zombie.move(); // Movement
+            zombie.move(); // Movement
 
             /*if (human.getBreedingStatus()) { // Breeding
                 // Checks the cardinal directions
