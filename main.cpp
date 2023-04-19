@@ -99,45 +99,39 @@ int main() {
                     int y = zombie.getY();
                     switch (direction) {
                         case WEST:
-                            zombie = Zombie(&city, (zombie.getX() + 0), (zombie.getY() - 1));
-                            zombie.setPosition(&zombie,zombie.getX() + 0,zombie.getY() - 1);
-                            zombies.emplace_back(&city,zombie.getX() + 0,zombie.getY() - 1);
+                            y -= 1;
                             break;
-                        /*case NORTH:
-                            zombie = Zombie(&city, (zombie.getX() + 0), (zombie.getY() + 1));
-                            zombie.setPosition(&zombie,zombie.getX() + 0,zombie.getY() + 1);
-                            zombies.emplace_back(&city,zombie.getX() + 0,zombie.getY() + 1);
-                            break;*/
-                        /*case EAST:
-                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() + 0));
-                            zombie.setPosition(&zombie,zombie.getX() - 1,zombie.getY() - 0);
-                            zombies.emplace_back(&city,zombie.getX() - 1,zombie.getY() + 0);
-                            break;*/
-                        /*case SOUTH:
-                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() + 0));
-                            zombie.setPosition(&zombie,zombie.getX() + 1,zombie.getY() + 1);
-                            zombies.emplace_back(&city,zombie.getX() + 1,zombie.getY() + 0);
-                            break;*/
-                        /*case NORTHWEST:
-                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() - 1));
-                            zombie.setPosition(&zombie,zombie.getX() - 1,zombie.getY() - 1);
-                            zombies.emplace_back(&city,zombie.getX() - 1,zombie.getY() - 0);
-                            break;*/
-                        /*case SOUTHWEST:
-                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() - 1));
-                            break;*/
-                        /*case SOUTHEAST:
-                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() + 1));
-                            break;*/
-                        /*case NORTHEAST:
-                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() + 1));
-                            break;*/
+                        case NORTH:
+                            y += 1;
+                            break;
+                        case EAST:
+                            x -= 1;
+                            break;
+                        case SOUTH:
+                            x += 1;
+                            break;
+                        case NORTHWEST:
+                            x -=1;
+                            y -=1;
+                            break;
+                        case SOUTHWEST:
+                            x += 1;
+                            y -= 1;
+                            break;
+                        case SOUTHEAST:
+                            x += 1;
+                            y += 1;
+                            break;
+                        case NORTHEAST:
+                            x -= 1;
+                            y += 1;
+                            break;
                         default:
                             break;
                     }
                     // Create a new human at the breeding location
                     Zombie &zombie = zombies.emplace_back(&city, x, y);
-                    zombie.setPosition(&zombie, x, y);
+                    zombie.setPosition(&zombie,x,y);
                 } else {
                     // Reset the breeding status of the parent if there are no viable locations
                     zombie.setBreedingStatus(false);
@@ -148,7 +142,7 @@ int main() {
         cout << city;
         cout << "Number of iterations: " << iterations << endl;
 
-        Sleep(100);
+        Sleep(10);
         iterations++;
 
         //If there are no empty spots, the game is over.
