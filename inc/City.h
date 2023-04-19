@@ -33,6 +33,8 @@ public:
     friend ostream& operator<<(ostream& output, City& city); //Override for output
 
     Organism *grid[GRID_HEIGHT][GRID_WIDTH]{};
+
+    static bool isEmptyAndInBounds(int x, int y, City *city);
 };
 
 #endif //HUMANZOMBIES_CITY_H

@@ -27,11 +27,11 @@ string Human::getSpecies() {
 }
 
 int Human::getX(){
-    return x;
+    return this->x;
 }
 
 int Human::getY(){
-    return y;
+    return this->y;
 }
 
 bool Human::getBreedingStatus() const{
@@ -49,12 +49,12 @@ void Human::move() {
     // Move the human up if the cell above is empty
     switch(direction){
         case WEST:
-            //Checks if it is interacting with itself
+            //Checks if it is interacting with another organism
             if (city->getOrganism(x, y) != this) {
                 break;
             }
             //Checks if the space is a null pointer and moves there
-            if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
+            if (city->getOrganism(x, y - 1) == nullptr && City::isEmptyAndInBounds(x,y-1,city)) {
                 city->setOrganism(this, x, y - 1);
                 city->setOrganism(nullptr, x, y);
                 y--;
@@ -64,7 +64,7 @@ void Human::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
+            if (city->getOrganism(x, y + 1) == nullptr && City::isEmptyAndInBounds(x,y+1,city)) {
                 city->setOrganism(this, x, y + 1);
                 city->setOrganism(nullptr, x, y);
                 y++;
@@ -74,7 +74,7 @@ void Human::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
+            if (city->getOrganism(x - 1, y) == nullptr && City::isEmptyAndInBounds(x-1,y,city)) {
                 city->setOrganism(this, x - 1, y);
                 city->setOrganism(nullptr, x, y);
                 x--;
@@ -84,7 +84,7 @@ void Human::move() {
             if (city->getOrganism(x, y) != this) {
                 break;
             }
-            if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
+            if (city->getOrganism(x + 1, y) == nullptr && City::isEmptyAndInBounds(x+1,y,city)) {
                 city->setOrganism(this, x + 1, y);
                 city->setOrganism(nullptr, x, y);
                 x++;
@@ -112,28 +112,27 @@ void Human::move() {
 
 int Human::viableBreedingGrounds(){
     int direction = 0;
-
     //Starts from 0 and increments up until 5, at which case we know there are no viable spots.
     //If there are no valid locations, this function will return 5
     while (direction < 4) {
         switch (direction) {
             case WEST:
-                if (city->getOrganism(x, y - 1) == nullptr && City::inBounds(x, y - 1)) {
-                    return direction;
-                }
-                break;
-            case EAST:
-                if (city->getOrganism(x, y + 1) == nullptr && City::inBounds(x, y + 1)) {
+                if (City::isEmptyAndInBounds(x, y - 1, city)) {
                     return direction;
                 }
                 break;
             case NORTH:
-                if (city->getOrganism(x - 1, y) == nullptr && City::inBounds(x - 1, y)) {
+                if (City::isEmptyAndInBounds(x, y+1, city)) {
+                    return direction;
+                }
+                break;
+            case EAST:
+                if (City::isEmptyAndInBounds(x-1, y, city)) {
                     return direction;
                 }
                 break;
             case SOUTH:
-                if (city->getOrganism(x + 1, y) == nullptr && City::inBounds(x + 1, y)) {
+                if (City::isEmptyAndInBounds(x + 1, y, city)) {
                     return direction;
                 }
                 break;
@@ -144,4 +143,6 @@ int Human::viableBreedingGrounds(){
     }
     return 4;
 }
+
+
 

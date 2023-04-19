@@ -19,7 +19,7 @@ Organism::~Organism() = default;
 void Organism::setPosition(Organism *organism, int j, int k){ //Sets the position of an organism in a specific city
     this->x = j;
     this->y = k;
-    city->setOrganism(organism, j, k);
+    organism->city->setOrganism(organism, j, k);
 }
 
 int Organism::getRandomNumber() { //Generates a random number between 0-3 (N,S,E,W), used for human movement

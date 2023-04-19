@@ -12,6 +12,7 @@ class Human : public Organism{
 private:
     bool canBreed{};
     int breedCounter{};
+
 public:
     Human();
      Human(City& city, int x, int y);

@@ -13,8 +13,8 @@ using namespace std;
 
 class Organism {
 protected:
-    int x{};
-    int y{};
+    int x;
+    int y;
     bool moved{};
     string species;
     City *city{};

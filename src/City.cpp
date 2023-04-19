@@ -58,7 +58,10 @@ ostream &operator<<(ostream &output, City &city) {
 
 //Checks the bounds of the walls, minus 1 to account for the wall character
 bool City::inBounds(int x, int y) {
-    return (x >= 1 && x < 19 && y >= 1 && y < 19);
+    return (x >= 1 && x <= 20 && y >= 1 && y <= 20);
+}
+bool City::isEmptyAndInBounds(int x, int y, City* city) {
+    return city->getOrganism(x, y) == nullptr && City::inBounds(x, y);
 }
 
 
