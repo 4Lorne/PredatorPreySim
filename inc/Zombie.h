@@ -10,6 +10,7 @@
 
 class Zombie : public Organism{
 private:
+
     bool canBreed{};
     int breedCounter{};
     int stepsSinceEaten{};
@@ -37,6 +38,7 @@ public:
     int getStepsSinceEaten() const;
 
     void setStepsSinceEaten(int steps);
+
 };
 
 #endif //HUMANZOMBIES_ZOMBIE_H

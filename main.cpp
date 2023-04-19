@@ -15,38 +15,38 @@ int main() {
 
     //Generate humans on the map
     std::vector<Human> humans;
-    humans.reserve(20*20);
+    humans.reserve(20 * 20);
     for (int i = 0; i < HUMAN_STARTCOUNT; i++) {
         int x = rand() % GRIDSIZE;
         int y = rand() % GRIDSIZE;
 
         //Checks if the position is already taken
-        while (city.getOrganism(x, y) != nullptr && city.getOrganism(x,y)->getSpecies() != "Zombie" &&
-               City::inBounds(x, y)){
+        while (city.getOrganism(x, y) != nullptr && city.getOrganism(x, y)->getSpecies() != "Zombie" &&
+               City::inBounds(x, y)) {
             x = rand() % GRIDSIZE;
             y = rand() % GRIDSIZE;
         }
 
         //Adds the human the map after a viable space is located
-        Human &human = humans.emplace_back(&city,x,y);
+        Human &human = humans.emplace_back(&city, x, y);
         human.setPosition(&human, x, y);
     }
 
     //Generate zombies on the map
     vector<Zombie> zombies;
-    zombies.reserve(20*20);
+    zombies.reserve(20 * 20);
     for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
         int x = rand() % GRIDSIZE;
         int y = rand() % GRIDSIZE;
 
         //Checks if the position is already taken
-        while (City::isEmptyAndInBounds(x, y, &city)){
+        while (City::isEmptyAndInBounds(x, y, &city)) {
             x = rand() % GRIDSIZE;
             y = rand() % GRIDSIZE;
         }
 
         //Adds the zombie the map after a viable space is located
-        Zombie &zombie = zombies.emplace_back(&city,x,y);
+        Zombie &zombie = zombies.emplace_back(&city, x, y);
         zombie.setPosition(&zombie, x, y);
     }
 
@@ -54,7 +54,7 @@ int main() {
     int iterations = 1;
     while (iterations < 1000) {
         //Human behaviour - Move, Breed
-        for (auto& human : humans) {
+        for (auto &human: humans) {
             human.move(); // Movement
 
             if (human.getBreedingStatus()) { // Breeding
@@ -80,7 +80,7 @@ int main() {
                             break;
                     }
                     // Create a new human at the breeding location
-                    Human &human = humans.emplace_back(&city,x,y);
+                    Human &human = humans.emplace_back(&city, x, y);
                     human.setPosition(&human, x, y);
                 } else {
                     // Reset the breeding status of the parent if there are no viable locations
@@ -88,95 +88,67 @@ int main() {
                 }
             }
         }
-        for (auto& zombie : zombies) {
+        for (auto &zombie: zombies) {
             zombie.move(); // Movement
 
-            /*if (human.getBreedingStatus()) { // Breeding
+            if (zombie.getBreedingStatus()) { // Breeding
                 // Checks the cardinal directions
-                int direction = human.viableBreedingGrounds();
-                if (direction != 4) {
-                    int x = human.getX();
-                    int y = human.getY();
+                int direction = zombie.viableBreedingGrounds();
+                if (direction != 8) {
+                    int x = zombie.getX();
+                    int y = zombie.getY();
                     switch (direction) {
                         case WEST:
-                            y -= 1;
+                            zombie = Zombie(&city, (zombie.getX() + 0), (zombie.getY() - 1));
+                            zombie.setPosition(&zombie,zombie.getX() + 0,zombie.getY() - 1);
+                            zombies.emplace_back(&city,zombie.getX() + 0,zombie.getY() - 1);
                             break;
-                        case NORTH:
-                            y += 1;
-                            break;
-                        case EAST:
-                            x -= 1;
-                            break;
-                        case SOUTH:
-                            x += 1;
-                            break;
+                        /*case NORTH:
+                            zombie = Zombie(&city, (zombie.getX() + 0), (zombie.getY() + 1));
+                            zombie.setPosition(&zombie,zombie.getX() + 0,zombie.getY() + 1);
+                            zombies.emplace_back(&city,zombie.getX() + 0,zombie.getY() + 1);
+                            break;*/
+                        /*case EAST:
+                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() + 0));
+                            zombie.setPosition(&zombie,zombie.getX() - 1,zombie.getY() - 0);
+                            zombies.emplace_back(&city,zombie.getX() - 1,zombie.getY() + 0);
+                            break;*/
+                        /*case SOUTH:
+                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() + 0));
+                            zombie.setPosition(&zombie,zombie.getX() + 1,zombie.getY() + 1);
+                            zombies.emplace_back(&city,zombie.getX() + 1,zombie.getY() + 0);
+                            break;*/
+                        /*case NORTHWEST:
+                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() - 1));
+                            zombie.setPosition(&zombie,zombie.getX() - 1,zombie.getY() - 1);
+                            zombies.emplace_back(&city,zombie.getX() - 1,zombie.getY() - 0);
+                            break;*/
+                        /*case SOUTHWEST:
+                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() - 1));
+                            break;*/
+                        /*case SOUTHEAST:
+                            zombie = Zombie(&city, (zombie.getX() + 1), (zombie.getY() + 1));
+                            break;*/
+                        /*case NORTHEAST:
+                            zombie = Zombie(&city, (zombie.getX() - 1), (zombie.getY() + 1));
+                            break;*/
                         default:
                             break;
                     }
                     // Create a new human at the breeding location
-                    Human &human = humans.emplace_back(city,x,y);
-                    human.setPosition(&human, x, y);
+                    Zombie &zombie = zombies.emplace_back(&city, x, y);
+                    zombie.setPosition(&zombie, x, y);
                 } else {
                     // Reset the breeding status of the parent if there are no viable locations
-                    human.setBreedingStatus(false);
-                }
-            }*/
-        }
-        /*for (int i = 0; i < ZOMBIE_STARTCOUNT; i++) {
-            if (zombies[i].getBreedingStatus()) { //Breeding
-                // Checks the cardinal directions
-                //      Add move counter to main
-                int direction = zombies[i].viableBreedingGrounds();
-                if (direction != 8) {
-                    switch (direction) {
-                        case WEST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() + 0), (zombies[i].getY() - 1));
-                            break;
-                        case NORTH:
-                            zombies[i] = Zombie(city, (zombies[i].getX() + 0), (zombies[i].getY() + 1));
-                            break;
-                        case EAST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() - 1), (zombies[i].getY() + 0));
-                            break;
-                        case SOUTH:
-                            zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() + 0));
-                            break;
-                        case NORTHWEST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() - 1), (zombies[i].getY() - 1));
-                            break;
-                        case SOUTHWEST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() - 1));
-                            break;
-                        case SOUTHEAST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() + 1), (zombies[i].getY() + 1));
-                            break;
-                        case NORTHEAST:
-                            zombies[i] = Zombie(city, (zombies[i].getX() - 1), (zombies[i].getY() + 1));
-                            break;
-                        default:
-                            break;
-                    }
-                    //Sets the zombie to a human after 3 steps
-                    if (zombies[i].getStepsSinceEaten() == 3) {
-                        humans[i] = Human(city, zombies[i].getX(),
-                                          zombies[i].getY()), zombies[i].getX(), zombies[i].getY();
-                        humans[i].setPosition(&humans[i], humans[i].getX(), humans[i].getY());
-                        zombies[i].setStepsSinceEaten(0);
-                    }
-                    // Create a new Zombie
-                    zombies[i] = Zombie(city, zombies[i].getX(), zombies[i].getY());
-                    zombies[i].setPosition(&zombies[i], zombies[i].getX(), zombies[i].getY());
-                } else {
-                    // Keep the breeding status if they have been fed and there are no viable humans
-                    zombies[i].setBreedingStatus(true);
+                    zombie.setBreedingStatus(false);
                 }
             }
-        }*/
+        }
 
         cout << city;
         cout << "Number of iterations: " << iterations << endl;
 
-        Sleep(1000);
+        Sleep(100);
         iterations++;
 
         //If there are no empty spots, the game is over.
