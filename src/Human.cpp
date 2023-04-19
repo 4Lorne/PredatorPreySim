@@ -5,9 +5,9 @@
 #include <random>
 #include "../inc/Human.h"
 
-Human::Human(City &city, int x, int y) {
+Human::Human(City *city, int x, int y) {
     this->species = "Human";
-    this->city = &city;
+    this->city = city;
     this->canBreed = false;
     this->breedCounter = HUMAN_BREED;
     this->moved = false;

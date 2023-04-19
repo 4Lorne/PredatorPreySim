@@ -10,12 +10,12 @@
 
 class Zombie : public Organism{
 private:
-    bool canBreed;
-    int breedCounter;
-    int stepsSinceEaten;
+    bool canBreed{};
+    int breedCounter{};
+    int stepsSinceEaten{};
 public:
     Zombie(); //Default
-    explicit Zombie(City& city, int x, int y); //Constructor that assigns the zombie to a city
+    explicit Zombie(City *city, int x, int y); //Constructor that assigns the zombie to a city
     ~Zombie() override; //Destructor
 
     void setSpecies(string species);
