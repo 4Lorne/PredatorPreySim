@@ -135,21 +135,30 @@ int main() {
         iterations++;
 
         //If there are no empty spots, the game is over.
-        //TODO: Check for all of one type
-        bool isEmptySpot = false;
+        int humanCount = 0;
+        int zombieCount = 0;
+        bool zombieWin = false;
+        bool humanWin = false;
         for (int row = 0; row < GRID_WIDTH; row++) {
             for (int col = 0; col < GRID_HEIGHT; col++) {
-                if (city.getOrganism(row, col) == nullptr) {
-                    isEmptySpot = true;
-                    break;
+                if (city.getOrganism(row, col) != nullptr && city.getOrganism(row,col)->getSpecies() == "Human") {
+                    humanCount++;
+                } else if (city.getOrganism(row, col) != nullptr && city.getOrganism(row,col)->getSpecies() == "Human"){
+                    zombieCount++;
                 }
             }
-            if (isEmptySpot) {
-                break;
+            //19x19 = 361
+            if (humanCount == 361) {
+                humanWin = true;
+            } else if (zombieCount == 361){
+                zombieWin = true;
             }
         }
-        if (!isEmptySpot) {
-            std::cout << "Game Over" << std::endl;
+        if (humanWin) {
+            std::cout << "Humans have won!" << std::endl;
+            break;
+        } else if (zombieWin){
+            cout << "Zombies have won!" << endl;
             break;
         }
     }
